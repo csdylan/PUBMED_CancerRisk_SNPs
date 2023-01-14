@@ -1,0 +1,17 @@
+import requests
+from bs4 import BeautifulSoup
+
+
+with open("mydna.txt", "r") as f:
+    mydna = [line.split(" ")[0] for line in f if line.startswith("rs")]
+
+
+for snp in mydna:
+    url = f"https://pubmed.ncbi.nlm.nih.gov/?term={snp}+cancer"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+   
+    if "No items found" not in soup.text:
+        print(f"SNP {snp} is associated with cancer.")
+
